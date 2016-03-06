@@ -91,7 +91,7 @@ int main() {
   string* signature; //MD5 hash of userID and appToken
   string* sessionToken;
   string* key;
-  string* password = new string("Hamey123!");
+  string* password = new string("!");
 
   signature = generateSignature(userID, appToken);
 
