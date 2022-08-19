@@ -1,46 +1,47 @@
 /* Basic Inheritance
+Derived classes call the super class's constructor
+
 private, protected, public:
-	Private members are accessible only to the base class
-	Protected members are accessible to the base class and any deriving class
-	Public members are accessible by everything.
-
-	These rules need to be considered when trying to access through other functions
-		kind of like in a different scope
+    Private members are accessible only to the base class
+    Protected members are accessible to the base class and any deriving class
+    Public members are accessible by everything.
 */
-#include <iostream>
 
-using namespace std;
+#include <helpers.hpp>
+#include <iostream>
+using std::cout;
+using std::endl;
 
 class Base {
 public:
-	Base() {
-		privateShit = 1;
-		protectedShit = 420;
-	}
+    Base() : publicShit(0), privateShit(1), protectedShit(2)
+    {
+        cout << "Base constructor called" << endl;
+    }
+
+    int publicShit;
 
 protected:
-	int protectedShit;
+    int protectedShit;
 
 private:
-	int privateShit; //Cannot be accessed by a deriving class
+    int privateShit;
 };
 
 class Derived : public Base {
 public:
-	Derived() {
-		int publicShit = 1337;
-	}
+    Derived()
+    {
+        cout << "Derived constructor called" << endl;
+    }
 
-	// You can't do this
+    void get_public() { cout << publicShit << endl; }
+    void get_protected() { cout << protectedShit << endl; }
 
-	// void printPrivateShit() {
-	// 	cout << privateShit << endl;
-	// }
-
-	// You can do this
-	void printProtectedShit() {
-		cout << protectedShit << endl;
-	}
+    // Derived classes cannot access the private members of the super class
+#if ERROR
+    void get_private() { cout << privateShit << endl; }
+#endif
 };
 
 
@@ -48,13 +49,6 @@ public:
 
 
 int main() {
-	Base b;
-	Derived d;
-
-	//Can't do either of these:
-	// cout << d.protectedShit;
-	// cout << d.privateShit;
-
-	// Can do this because the access is ocurring within the class
-	d.printProtectedShit();
+    Base b;
+    Derived d;
 }
