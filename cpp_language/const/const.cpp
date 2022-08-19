@@ -1,76 +1,92 @@
 /* const
-Nice summary:
-The effects of declaring a variable to be const propagate throughout the program. 
-Once you have a const object, it cannot be assigned to a non-const reference or use 
-functions that are known to be capable of changing the state of the object. This is 
-necessary to enforce the const-ness of the object, but it means you need a way to 
-state that a function should not make changes to an object. In non-object-oriented 
-code, this is as easy as using const references as demonstrated above. 
+The const syntax is kinda weird tbh, it sorta applies to the "thing" to the left,
+    and if nothing is to the left it applies to the right.
 
- In C++, however, there's the issue of classes with methods. If you have a const 
- object, you don't want to call methods that can change the object, so you need a 
- way of letting the compiler know which methods can be safely called. These methods 
- are called "const functions", and are the only functions that can be called on a 
- const object. Note, by the way, that only member methods make sense as const methods.
-  Remember that in C++, every method of an object receives an implicit this pointer to 
-  the object; const methods effectively receive a const this pointer. 
+Examples:
+    Applies to the int
+    const int* pointer_to_constant_integer = &_;
 
- Variable declaration:
+    Applies to the pointer
+    int* const constant_pointer_to_nonconst_data = nullptr;
+
+    Applies to both
+    const int* const constant_pointer_to_constant_data = nullptr;
+
  */
- 	const int constantInteger;
- 	const int* pointerToConstantInteger;
- 	int* const constantPointerToNonConstData;
- 	const int* const constantPointerToConstantData;
 
-
-
-
-// class Base {
-// public:
-// 	Base() {
-// 	}
-
-// 	const int constVar;
-// };
-
-// const int Base::constVar = 1337;
-
+#include <helpers.hpp>
 #include <iostream>
-  using namespace std;
+using std::cout;
+using std::endl;
 
-void const examineConstVars(const int var) {
-	cout << var << endl;
+
+
+
+// Functions do not need to be declared const, it is sufficient to 
+// appropriately declare the parameters const
+void examine_const_var(const int* var) {
+    cout << *var << endl;
 }
 
+
+
+// This would not compile, the compiler is smart enough to know
+// you are modifying a const parameter
 void alterConstVars(const int* vat)
+{
+#if ERROR
+    *vat = 0;
+#endif
+}
+
+/*
+Constness on classes is a little silly. The method itself must be declared const.
+When a method is declared const, the implicit "this" pointer changes:
+Normally "this" is T* const, IE the object is mutable but the pointer is not
+"this" changes to const T* const, meaning the underlying object cannot be modified
+
+Long story short, the declaration is "<method> const", not "const <method>"
+*/
+
+class dummy
+{
+public:
+    dummy() : data_(1337)
+    {}
+
+    void modify_data() { data_++; }
+    void view_data() const { cout << data_ << endl; }
+    void const incorrectly_const()  { cout << data_ << endl; }
+private:
+    int data_;
+};
+
 
 
 
 int main() {
-	int happyInt = 1337;
+    // This will always be 0
+    const int constant_integer = 0;
 
-	// Will always be three, can't modify
-	const int alwaysThree = 3;
+    // The pointer can change, but the int is a constant
+    const int _ = 1337;
+    const int* pointer_to_constant_integer = &_;
 
-	// Declaring a pointer to constant data
-	const int* intPointer = &alwaysThree;
+    // The pointer cannot change but the data can
+    int* const constant_pointer_to_nonconst_data = nullptr;
 
-	// Can change what the pointer points to though
-	intPointer = &happyInt;
+    // Neither the pointer nor data can change
+    const int* const constant_pointer_to_constant_data = nullptr;
 
-	// the pointer itself is const, can change contents but not address
-	int* const constantPointer = &happyInt;
-	*constantPointer = happyInt;
+    examine_const_var(pointer_to_constant_integer);
 
-	// Can't do this, even though the data we point to now isn't const
-	// *intPointer = happyInt;
+    ANNOUNCE_SECTION("Object Constness");
+    
+    const dummy d;
+#if ERROR
+    d.modify_data();
+    d.incorrectly_const();
+#endif
 
-	// Can't declare a non-const pointer to const data
-	// int* nonConstPointer = &alwaysThree;
-
-	// Valid, now we can't change either
-	const int* const reallySecurePointer = &alwaysThree;
-
-
-	examineConstVars(*intPointer);
+    d.view_data();
 }
