@@ -4,6 +4,7 @@ top() returns a reference to the top element
 pop() removes the top element
 */
 
+#include <helpers.hpp>
 #include <iostream>
 using std::cout;
 using std::endl;
