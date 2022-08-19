@@ -42,6 +42,8 @@ int main() {
 	referencedB.report();
 
 	// Cannot do this, compiler not that helpful
+#if ERROR
 	writeBase(&b);
+#endif
 }
 
