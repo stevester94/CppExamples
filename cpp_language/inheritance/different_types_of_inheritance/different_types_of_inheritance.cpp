@@ -2,13 +2,16 @@
 NB: For all below, this is from the viewpoint of the outside accessors of the derived class.
     Internally, all access looks like it would with public inheritance
 Public Inheritance:
-    The classic, keeps acces the same as the parent's
+    The classic, keeps acces the same as the parent's.
+    This is the most common type, and models an "is-a" relationship with the superclass.
 
 Protected Inheritance:
     Turns public members protected, rest is unchanged from parent.
+    Models an "is-implemented-in-terms-of" relationship. Since the superclass's members aren't exposed publicly, this is for utility only in implementation, not usage.
 
 Private Inheritance:
     Turns all members private.
+    Same modeling concept as protected inheritance.
 
 
 */
