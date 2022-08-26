@@ -47,11 +47,24 @@ public:
     void remove_right() { right = nullptr; }
 
     T value;
-private:
     Node* left;
     Node* right;
 };
 
 }; //NS: tree
+
+// namespace tree_v2
+// {
+
+// template<class T>
+// class Node
+// {
+// public:
+
+
+
+
+// };
+// };
 
 #endif
