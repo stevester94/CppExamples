@@ -1,6 +1,6 @@
 TOOLBOX_PATH := $(shell realpath _toolbox)
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -I$(TOOLBOX_PATH)
+CXXFLAGS := -std=c++20 -Wall -I$(TOOLBOX_PATH)
 
 # Recursively find all directories containing source files
 IGNORE_PATTERN := \.git|vscode|_toolbox|ccls-cache|STL|md5|json
