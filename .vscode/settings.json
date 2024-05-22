@@ -5,6 +5,7 @@
         "ostream": "cpp",
         "shared_mutex": "cpp",
         "atomic": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "iosfwd": "cpp"
     }
 }
