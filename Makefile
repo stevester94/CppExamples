@@ -14,7 +14,13 @@ EXAMPLE_EXES := $(foreach dir, $(EXAMPLE_DIRS), $(dir)/out)
 all: $(EXAMPLE_EXES)
 
 %/out: %/*.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+	if [ -f $*/flags.txt ]; then \
+		echo "Compiling with custom commands"; \
+		FLAGS=$$(cat $*/flags.txt); \
+		$(CXX) $$FLAGS -I$(TOOLBOX_PATH) -o $@ $<; \
+	else \
+		$(CXX) $(CXXFLAGS) -o $@ $<; \
+	fi
 
 clean:
 	for dir in $(EXAMPLE_DIRS); do rm $$dir/out; done
