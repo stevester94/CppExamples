@@ -19,3 +19,6 @@ std::string vectorToStr( std::vector<T> v ) {
 
   return ss.str();
 }
+
+#define BEGIN_SECTION(enabled) if(enabled) {
+#define END_SECTION }
