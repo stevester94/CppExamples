@@ -2,6 +2,17 @@
 Copy constructors are straight forward. They'll be used when you assign an object to another object, or when a
 function takes a vanilla object (not a ref or whatever)
 
+Move constructors are intended to be used when an object contains a bunch of data that you can avoid copying
+
+The compiler is *allowed* to use move constructors when returning local objects from a method
+- But this isn't a guarantee, so it kinda sucks that you don't know exactly what's going on sometimes.
+
+There is also the concept of copy elision, where when you do something like:
+M m = make_an_m()
+You'll avoid a new object all together and construct m sorta in make_an_m.
+- You can see this in an example below
+
+
 
 
 Really move constructors
@@ -100,6 +111,7 @@ BEGIN_SECTION(false)
     make_a_movable(); // default constructor with arg, then destructor
 END_SECTION
 
+// This is an example of copy-elision
 BEGIN_SECTION(false)
     Movable m_1 = make_a_movable(); // Very interesting. The compiler is optimizing and just caling default with arg
     Movable m_2 = make_a_complicated_movable(); // Same here
